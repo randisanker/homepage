@@ -1,0 +1,23 @@
+{% extends 'main/base.html' %}
+{% block content %}
+<h2 class="mb-4 text-primary fw-bold"><i class="bi bi-journal-check"></i> Daftar Kelas Anda</h2>
+<div class="row">
+    {% for k in kelas_list %}
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 border-primary shadow-sm">
+            <div class="card-body">
+                <h4 class="card-title">{{ k.mata_kuliah.nama }}</h4>
+                <div class="mb-3">
+                    <span class="badge bg-primary">{{ k.nama_kelas }}</span>
+                    <span class="badge bg-secondary">{{ k.semester }}</span>
+                </div>
+                <p class="card-text text-muted">Total: {{ k.mahasiswa.count }} Mahasiswa</p>
+                <a href="{% url 'input_absensi' k.id %}" class="btn btn-outline-primary w-100">Buka Absensi</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="alert alert-warning">Belum ada data kelas. Silakan input di Admin Panel.</div>
+    {% endfor %}
+</div>
+{% endblock %}

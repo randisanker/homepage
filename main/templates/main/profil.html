@@ -1,0 +1,60 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4 text-center">
+        {% if profil.foto %}
+        <img src="{{ profil.foto.url }}" class="img-fluid rounded-circle mb-3" style="max-width: 200px;">
+        {% endif %}
+        <h3>{{ profil.nama_lengkap }}</h3>
+        <p class="text-muted">NIDN: {{ profil.nidn }}</p>
+        <a href="{{ profil.scholar_link }}" class="btn btn-outline-primary btn-sm">Google Scholar</a>
+        <hr>
+        <div class="text-start">
+            <h5>Biografi</h5>
+            <p>{{ profil.bio }}</p>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item"><button class="nav-link active" data-bs-target="#penelitian" data-bs-toggle="tab">Penelitian</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-target="#pkm" data-bs-toggle="tab">PkM</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-target="#publikasi" data-bs-toggle="tab">Publikasi</button></li>
+        </ul>
+
+        <div class="tab-content mt-3" id="myTabContent">
+            <div class="tab-pane fade show active" id="penelitian">
+                <ul class="list-group">
+                {% for item in penelitian %}
+                    <li class="list-group-item">
+                        <h6 class="mb-1">{{ item.judul }} ({{ item.tahun }})</h6>
+                        <p class="mb-1 small text-muted">{{ item.deskripsi }}</p>
+                    </li>
+                {% empty %}
+                    <p>Belum ada data penelitian.</p>
+                {% endfor %}
+                </ul>
+            </div>
+
+            <div class="tab-pane fade" id="pkm">
+                <ul class="list-group">
+                {% for item in pkm %}
+                    <li class="list-group-item">{{ item.judul }} - {{ item.tahun }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+
+            <div class="tab-pane fade" id="publikasi">
+                <ul class="list-group">
+                {% for item in publikasi %}
+                    <li class="list-group-item">
+                        <a href="{{ item.link_eksternal }}" target="_blank">{{ item.judul }}</a> ({{ item.tahun }})
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

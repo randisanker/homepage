@@ -1,0 +1,30 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<h2 class="mb-4">Koleksi Video Pembelajaran dan Penelitian</h2>
+
+<div class="mb-4">
+    <a href="{% url 'video' %}" class="btn btn-secondary btn-sm">Semua</a>
+    {% for kat in kategori %}
+        <a href="?kategori={{ kat.nama }}" class="btn btn-outline-primary btn-sm">{{ kat.nama }}</a>
+    {% endfor %}
+</div>
+
+<div class="row">
+    {% for video in videos %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="ratio ratio-16x9">
+                <iframe width="560" height="315" src="{{ video.youtube_id }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ video.judul }}</h5>
+                <p class="card-text small text-muted">{{ video.kategori.nama }}</p>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12"><p>Tidak ada video ditemukan.</p></div>
+    {% endfor %}
+</div>
+{% endblock %}

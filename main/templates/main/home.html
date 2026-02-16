@@ -1,0 +1,122 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<div class="p-5 mb-4 bg-light rounded-3 shadow-sm border">
+    <div class="container-fluid py-3">
+        <div class="row align-items-center">
+            <div class="col-md-8 order-md-1 order-2">
+                <h1 class="display-5 fw-bold text-primary">Selamat Datang,</h1>
+                <h2 class="fw-normal mb-3">{{ profil.nama_lengkap|default:"Nama Dosen" }}</h2>
+                
+                <p class="col-md-10 fs-5 text-muted">
+                    {{ profil.bio|truncatewords:50|default:"Selamat datang di website pribadi saya. Website ini berisi informasi mengenai profil, penelitian, dan materi perkuliahan." }}
+                </p>
+                
+                <div class="mt-4">
+                    <a href="{% url 'profil' %}" class="btn btn-primary btn-lg me-2">
+                        <i class="bi bi-person-lines-fill"></i> Profil Lengkap
+                    </a>
+                    <a href="{% url 'contact' %}" class="btn btn-outline-secondary btn-lg">
+                        <i class="bi bi-envelope"></i> Hubungi Saya
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-4 order-md-2 order-1 text-center mb-3 mb-md-0">
+                {% if profil.foto %}
+                    <img src="{{ profil.foto.url }}" class="img-fluid rounded-circle shadow border border-4 border-white" style="width: 250px; height: 250px; object-fit: cover;" alt="{{ profil.nama_lengkap }}">
+                {% else %}
+                    <div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center text-white" style="width: 250px; height: 250px;">
+                        <span class="h1">Foto</span>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-12 d-flex justify-content-between align-items-center mb-3">
+        <h3 class="border-start border-4 border-primary ps-3">Kegiatan & Berita Terbaru</h3>
+        <a href="#" class="btn btn-sm btn-link text-decoration-none">Lihat Arsip <i class="bi bi-arrow-right"></i></a>
+    </div>
+
+    {% for item in kegiatan %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm hover-shadow transition">
+            {% if item.gambar %}
+            <div class="ratio ratio-16x9">
+                <img src="{{ item.gambar.url }}" class="card-img-top object-fit-cover" alt="{{ item.judul }}">
+            </div>
+            {% else %}
+            <div class="ratio ratio-16x9 bg-light d-flex align-items-center justify-content-center text-muted">
+                <i class="bi bi-image fs-1"></i>
+            </div>
+            {% endif %}
+
+            <div class="card-body">
+                <div class="mb-2">
+                    <small class="text-muted"><i class="bi bi-calendar-event"></i> {{ item.tanggal|date:"d F Y" }}</small>
+                </div>
+                <h5 class="card-title text-truncate">{{ item.judul }}</h5>
+                <p class="card-text small text-secondary">
+                    {{ item.konten|striptags|truncatewords:20 }}
+                </p>
+            </div>
+            <div class="card-footer bg-white border-top-0 text-end">
+                <a href="{% url 'detail_kegiatan' item.slug %}" class="btn btn-sm btn-outline-primary stretched-link">Baca Selengkapnya</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info text-center py-4">
+            <i class="bi bi-info-circle fs-4 d-block mb-2"></i>
+            Belum ada kegiatan terbaru yang dipublikasikan.
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="row text-center py-4 bg-white rounded shadow-sm border">
+    <div class="col-md-4 mb-3 mb-md-0 border-end">
+        <div class="p-3">
+            <i class="bi bi-journal-check fs-1 text-success mb-2"></i>
+            <h5>Penelitian & Publikasi</h5>
+            <p class="small text-muted">Telusuri riwayat penelitian dan publikasi jurnal ilmiah.</p>
+            <a href="{% url 'profil' %}" class="btn btn-sm btn-success">Lihat Riset</a>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3 mb-md-0 border-end">
+        <div class="p-3">
+            <i class="bi bi-book fs-1 text-warning mb-2"></i>
+            <h5>Materi Perkuliahan</h5>
+            <p class="small text-muted">Unduh bahan ajar, modul, dan slide presentasi untuk mahasiswa.</p>
+            <a href="{% url 'materi' %}" class="btn btn-sm btn-warning text-white">Download Materi</a>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="p-3">
+            <i class="bi bi-youtube fs-1 text-danger mb-2"></i>
+            <h5>Video Pembelajaran</h5>
+            <p class="small text-muted">Tonton video tutorial dan rekaman perkuliahan di channel saya.</p>
+            <a href="{% url 'video' %}" class="btn btn-sm btn-danger">Tonton Video</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .object-fit-cover {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+    .hover-shadow:hover {
+        transform: translateY(-5px);
+        transition: all 0.3s ease;
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    }
+</style>
+
+{% endblock %}
